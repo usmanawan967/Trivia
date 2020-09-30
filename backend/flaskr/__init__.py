@@ -209,34 +209,35 @@ def create_app(test_config=None):
   and shown whether they were correct or not. 
   '''
 
-  @app.route('/quizzes', methods=['POST'])
+  @app.route('/quizes', methods=['POST'])
   def quiz_game():
-
     body = request.get_json()
     previous_questions = body.get('previous_questions', [])
     quiz_category = body.get('quiz_category', None)
-
+    if previous_questions==[]:
+      abort(422)
     try:
       if quiz_category:
-        if quiz_category['id'] == 0:
+        if quiz_category == str(0):
           questions = Question.query.all()
         else:
-          questions = Question.query.filter_by(category=int(quiz_category['id'])).all()
+          questions = Question.query.filter_by(category=str(quiz_category)).all()
       if not questions:
         return abort(422)
       data = []
       for question in questions:
-        if question.question not in previous_questions:
+        if question.id not in previous_questions:
           data.append(question.format())
+      print(len(data))
+
+
       if len(data) != 0:
-        result = random.choice(data)
+
         return jsonify({
-          'question': result
+          'success': True,
+          'question': data
         })
-      else:
-        return jsonify({
-          'question': False
-        })
+
     except:
       abort(422)
 
