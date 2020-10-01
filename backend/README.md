@@ -194,7 +194,7 @@ Fetches a dictionary of questions for the specific category
 ```
 POST `/quizzes`
 Fetches one random question within a specified category. Previously asked questions are not asked again. 
-- *Request body:* {previous_questions: arr, quiz_category: {id:int}}
+- *Request body:* {previous_questions: arr, quiz_category:category(string variable)
 - *Example response*: 
 ```
 {
