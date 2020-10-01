@@ -214,14 +214,10 @@ def create_app(test_config=None):
     body = request.get_json()
     previous_questions = body.get('previous_questions', [])
     quiz_category = body.get('quiz_category', None)
-    if previous_questions==[]:
+    if quiz_category==None:
       abort(422)
     try:
-      if quiz_category:
-        if quiz_category == str(0):
-          questions = Question.query.all()
-        else:
-          questions = Question.query.filter_by(category=str(quiz_category)).all()
+      questions = Question.query.filter_by(category=quiz_category).all()
       if not questions:
         return abort(422)
       data = []
