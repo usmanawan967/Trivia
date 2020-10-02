@@ -104,38 +104,34 @@ GET '/categories'
 
 
 
-GET `\questions?page=<page_number>` 
-Fetches a paginated dictionary of questions of all available categories
-- *Request parameters (optional):* page:int 
+GET `\questions` 
+curl -X GET http://127.0.0.1:5000/questions 
+get a paginated dictionary of questions of all available categories
+- *Request parameters (optional):* page:int if we no give page value the defult value is 0
 - *Example response:*  
- ``` {
-  "categories": {
-    "1": "Science", 
-    "2": "Art", 
-    "3": "Geography", 
-    "4": "History", 
-    "5": "Entertainment", 
-    "6": "Sports"
-  }
-  ], 
-  "success": true, 
-  "total_questions": 2
-}
+ ``` "current_category":null,
+"questions":[{"answer":"us"
+,"category":"us"
+,"difficulty":4
+"id":1,
+"question":"us"}
+
 ```
 
 DELETE `/questions/<id>`
-Delete an existing questions from the repository of available questions
-- *Request arguments:* question_id:int 
+curl -X DELETE http://127.0.0.1:5000/questions/32
+
+delete the question in database if its id match with given id
+- *Request arguments:* id:int 
 - *Example response:* 
 ```
-{
-  "deleted": "28", 
-  "success": true
-}
+{"deleted":32,
+"success":true}
+
 ```
 
 POST `/newquestions`
-Add a new question to the repository of available questions
+Add a new question in database 
 - *Request body:* {question:string, answer:string, difficulty:int, category:string}
 - *Example response:* 
 ```
@@ -145,68 +141,53 @@ Add a new question to the repository of available questions
 }
 ```
 POST `/questions/search`
-Fetches all questions where a substring matches the search term (not case-sensitive)
-- *Request body:* {searchTerm:string}
+curl -X POST -H "Content-Type: application/json" -d'{"searchTeram":"new"}' http://127.0.0.1:5000/questions/search
+get  all questions where a substring matches the searchTerm 
+- *Request body:* jasonbody{'searchTerm':'string'}
 - *Example response:*
 ```
-{
-  "current_category": null, 
-  "questions": [
-    {
-      "answer": "Lisbon", 
-      "category": 2, 
-      "difficulty": 1, 
-      "id": 29, 
-      "question": "What is the capital of Portugal?"
-    }
-  ], 
+questions":
+[{"answer":"us",
+"category":"us",
+"difficulty":4,
+"id":1,
+"question":"us"
+},
   "success": true, 
   "total_questions": 1
 }
 ```
 
 GET `/categories/<int:category_id>/questions`
-Fetches a dictionary of questions for the specific category
+curl -X GET http://127.0.0.1:5000/categories/1/questions
+get question with given   specific category
 - *Request argument:* category_id:int
 - *Example response:*
 ```
-{
-  "current_category": 1, 
-  "questions": [
-    {
-      "answer": "The Liver", 
-      "category": 1, 
-      "difficulty": 4, 
-      "id": 20, 
-      "question": "What is the heaviest organ in the human body?"
-    }, 
-    {
-      "answer": "Alexander Fleming", 
-      "category": 1, 
-      "difficulty": 3, 
-      "id": 21, 
-      "question": "Who discovered penicillin?"
-    }, 
-  ], 
+questions":[{"answer":"eeee"
+,"category":"1",
+"difficulty":1,
+"id":3,"
+question":"wwww"},
   "success": true, 
   "total_questions": 2
 }
 ```
 POST `/quizzes`
-Fetches one random question within a specified category. Previously asked questions are not asked again. 
+curl -X POST -H "Content-Type: application/json" -d'{"previous_question":[1,2,3],"quiz_category":"1"}' http://127.0.0.1:5000/quizes
+
+get random question within a given  category. Previously will never be asked again. 
 - *Request body:* {previous_questions: arr, quiz_category:category(string variable)
 - *Example response*: 
 ```
-{
-  "question": {
-    "answer": "The Liver", 
-    "category": 1, 
-    "difficulty": 4, 
-    "id": 20, 
-    "question": "What is the heaviest organ in the human body?"
-  }, 
-  "success": true
-}
+question":[{"answer":"eeee",
+"category":"1","
+difficulty":1,
+"id":3,"question":"wwww"},
+"success":true}
+
+
+
 ```
 
 ## Testing

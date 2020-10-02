@@ -163,7 +163,10 @@ def create_app(test_config=None):
   def search_questions():
     body = request.get_json()
     search_term = body.get('searchTerm', None)
-    if search_term =='':
+    print(search_term)
+
+    if search_term ==None:
+      print("usman")
       abort(404)
     try:
       search_results = Question.query.filter(
