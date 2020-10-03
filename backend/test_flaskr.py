@@ -34,6 +34,26 @@ class TriviaTestCase(unittest.TestCase):
     TODO
     Write at least one test for each test for successful operation and for expected errors.
     """
+ """
+    def test_delete_question_inrange(self):
+        question = Question(question='usman', answer='awan',difficulty=1, category=4)
+        question.insert()
+        id = question.id
+        res = self.client().delete(f'/questions/{id}')
+        data = json.loads(res.data)
+        print("test4")
+        question = Question.query.filter( Question.id == question.id).one_or_none()
+        self.assertEqual(res.status_code, 200)
+        self.assertEqual(data['success'], True)
+        self.assertEqual(data['deleted'], id)
+
+    def test_422_deleting_question_not_inrange(self):
+        res = self.client().delete('/questions/345')
+        data = json.loads(res.data)
+        print("test5")
+        self.assertEqual(res.status_code, 422)
+        self.assertEqual(data['success'], False)
+        self.assertEqual(data['message'], 'unprocessable')
 
     def test_select_category(self):
         res = self.client().get('/categories')
@@ -51,7 +71,7 @@ class TriviaTestCase(unittest.TestCase):
         self.assertEqual(data['success'], False)
         self.assertEqual(data['message'], 'resource not found')
 
-"""
+
     def test_get_paginated_questions_inrange(self):
         res = self.client().get('/questions')
         data = json.loads(res.data)
