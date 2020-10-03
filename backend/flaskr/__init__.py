@@ -71,8 +71,9 @@ def create_app(test_config=None):
   @app.route('/questions', methods=['GET'])
   def get_question():
     get = Question.query.all()
-    questions = paginate_questions(request, get)
     categories = Category.query.all()
+    questions = paginate_questions(request, get)
+
     categories_dict = {}
     for category in categories:
       categories_dict[category.id] = category.type
