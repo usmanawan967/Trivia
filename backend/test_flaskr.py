@@ -106,30 +106,25 @@ class TriviaTestCase(unittest.TestCase):
 
 
     def test_404_search_question(self):
-        new_search = {
-          'searchTerm': '',
-      }
+        new_search = {'searchTerm': '', }
         res = self.client().post('/questions/search', json=new_search)
         data = json.loads(res.data)
-
         self.assertEqual(res.status_code, 404)
         self.assertEqual(data["success"], False)
         self.assertEqual(data["message"], "resource not found")
 
     def test_addquestion(self):
-        new_question = { 'question': 'usman', 'answer': 'awan','difficulty': 1,'category': 1 }
-        res = self.client().post('/newquestions', json=new_question)
+        question = { 'question': 'what is the capital of pakistan', 'answer': 'lahore','difficulty': 1,'category': 1 }
+        res = self.client().post('/newquestions', json=question)
         data = json.loads(res.data)
-
         self.assertEqual(res.status_code, 200)
         self.assertEqual(data["success"], True)
 
 
     def test_422_addquestion(self):
-        new_question = {'question': 'alvi',  'answer': 'awan','category': 1}
-        res = self.client().post('/newquestions', json=new_question)
+        question = { 'question': 'what is the capital of pakistan', 'difficulty': 1,'category': 1 }
+        res = self.client().post('/newquestions', json=question)
         data = json.loads(res.data)
-
         self.assertEqual(res.status_code, 422)
         self.assertEqual(data["success"], False)
         self.assertEqual(data["message"], "unprocessable")
@@ -137,7 +132,6 @@ class TriviaTestCase(unittest.TestCase):
     def test_get_category_questions(self):
         res = self.client().get('/categories/1/questions')
         data = json.loads(res.data)
-
         self.assertEqual(res.status_code, 200)
         self.assertEqual(data['success'], True)
         self.assertTrue(len(data['questions']))
@@ -161,7 +155,7 @@ class TriviaTestCase(unittest.TestCase):
         self.assertEqual(res.status_code, 200)
         self.assertEqual(data['success'], True)
 
-    def test_404_play_quiz(self):
+    def test_404_quizgame(self):
         new_quiz_round = {'previous_questions': []}
         res = self.client().post('/quizes', json=new_quiz_round)
         data = json.loads(res.data)

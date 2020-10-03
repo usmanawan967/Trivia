@@ -12,7 +12,7 @@ QUESTIONS_PER_PAGE = 10
 def paginate_questions(request, selection):
   page = request.args.get('page', 1, type=int)
   startpoint = (page - 1) * QUESTIONS_PER_PAGE
-  endpoint = start + QUESTIONS_PER_PAGE
+  endpoint = startpoint + QUESTIONS_PER_PAGE
   questions = [question.format() for question in selection]
   questionsinlist = questions[startpoint:endpoint]
   return questionsinlist
@@ -124,21 +124,18 @@ def create_app(test_config=None):
   @app.route('/newquestions', methods=['POST'])
   def addquestion():
     body = request.get_json()
-    if not ('question' in body and 'answer' in body and 'difficulty' in body and 'category' in body):
+    if not ('category' in body and 'difficulty' in body and 'answer' in body and 'question' in body):
       abort(422)
     question = body.get('question')
     answer = body.get('answer')
     difficulty = body.get('difficulty')
     category = body.get('category')
-
     try:
-      question = Question(question=question, answer=answer,
-                          difficulty=difficulty, category=category)
+      question = Question(question=question, answer=answer, difficulty=difficulty, category=category)
       question.insert()
-
       return jsonify({
         'success': True,
-        'created': question.id,
+        'add_question': question.id,
       })
 
     except:
@@ -158,16 +155,15 @@ def create_app(test_config=None):
   '''
 
   @app.route('/questions/search', methods=['POST'])
-  def search_questions():
+  def question_search():
     body = request.get_json()
-    search_term = body.get('searchTerm', None)
-    print(search_term)
-    if search_term =="":
+    search = body.get('searchterm', None)
+    print(search)
+    if search =='':
       print("usman")
       abort(404)
     try:
-      search_results = Question.query.filter(
-        Question.question.ilike(f'%{search_term}%')).all()
+      search_results = Question.query.filter(Question.question.ilike(f'%{search}%')).all()
       return jsonify({
         'success': True,
         'questions': [question.format() for question in search_results],
@@ -186,13 +182,16 @@ def create_app(test_config=None):
   '''
 
   @app.route('/categories/<int:category_id>/questions', methods=['GET'])
-  def get_category_question(category_id):
+  def get_category_base_question(category_id):
    try:
-    data=Question.query.filter(Question.category==str(category_id))
-    current_questions = paginate_questions(request, data)
+    print("usman")
+    id=Category.query.with_entitie(Category.type).filter_by(id=category_id).one_or_none()
+    print(id)
+    data=Question.query.filter(Question.category==id[0])
+    questions = paginate_questions(request, data)
     return jsonify({
       'success': True,
-      'questions': current_questions,
+      'questions': questions,
     })
    except:
      abort(404)
