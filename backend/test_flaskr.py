@@ -50,7 +50,6 @@ class TriviaTestCase(unittest.TestCase):
         self.assertEqual(res.status_code, 422)
         self.assertEqual(data["success"], False)
         self.assertEqual(data["message"], "unprocessable")
-"""
     def test_quizgame(self):
         new_quiz_round = {'previous_questions': [1, 3, 9],'quiz_category': '1'}
         res = self.client().post('/quizes', json=new_quiz_round)
@@ -139,7 +138,7 @@ class TriviaTestCase(unittest.TestCase):
         self.assertEqual(data['message'], 'resource not found')
 
 
-    def test_get_paginated_questions_inrange(self):
+    def test_get_paginated_questions_inrange(self):# its is also a test case for get question
         res = self.client().get('/questions')
         data = json.loads(res.data)
         print("usmanawan")
@@ -159,7 +158,7 @@ class TriviaTestCase(unittest.TestCase):
         self.assertEqual(data['success'], False)
         self.assertEqual(data['message'], 'resource not found')
 
-"""
+
 
 
 

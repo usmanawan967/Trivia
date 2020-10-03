@@ -141,7 +141,7 @@ Add a new question in database
 }
 ```
 POST `/questions/search`
-curl -X POST -H "Content-Type: application/json" -d'{"searchTeram":"new"}' http://127.0.0.1:5000/questions/search
+curl -X POST -H "Content-Type: application/json" -d'{"searchteram":"new"}' http://127.0.0.1:5000/questions/search
 get  all questions where a substring matches the searchTerm 
 - *Request body:* jasonbody{'searchTerm':'string'}
 - *Example response:*
