@@ -164,14 +164,12 @@ def create_app(test_config=None):
     body = request.get_json()
     search_term = body.get('searchTerm', None)
     print(search_term)
-
-    if search_term ==None:
+    if search_term =="":
       print("usman")
       abort(404)
     try:
       search_results = Question.query.filter(
         Question.question.ilike(f'%{search_term}%')).all()
-
       return jsonify({
         'success': True,
         'questions': [question.format() for question in search_results],
