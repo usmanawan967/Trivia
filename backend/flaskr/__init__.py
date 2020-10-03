@@ -70,15 +70,14 @@ def create_app(test_config=None):
 
   @app.route('/questions', methods=['GET'])
   def get_question():
-    selection = Question.query.order_by(Question.id).all()
-    questions = paginate_questions(request, selection)
-    categories = Category.query.order_by(Category.type).all()
+    get = Question.query.all()
+    questions = paginate_questions(request, get)
+    categories = Category.query.all()
     categories_dict = {}
     for category in categories:
       categories_dict[category.id] = category.type
     if len(questions) == 0:
       abort(404)
-
     return jsonify({
       'success': True,
       'questions': questions,
