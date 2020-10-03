@@ -35,6 +35,39 @@ class TriviaTestCase(unittest.TestCase):
     Write at least one test for each test for successful operation and for expected errors.
     """
 
+    def test_addquestion(self):
+        question = {'question': 'what is the capital of pakistan', 'answer': 'lahore', 'difficulty': 1, 'category': 1}
+        res = self.client().post('/newquestions', json=question)
+        print("test111")
+        data = json.loads(res.data)
+        self.assertEqual(res.status_code, 200)
+        self.assertEqual(data["success"], True)
+
+    def test_422_addquestion(self):
+        question = {'question': 'what is the capital of pakistan', 'difficulty': 1, 'category': 1}
+        res = self.client().post('/newquestions', json=question)
+        data = json.loads(res.data)
+        self.assertEqual(res.status_code, 422)
+        self.assertEqual(data["success"], False)
+        self.assertEqual(data["message"], "unprocessable")
+"""
+    def test_quizgame(self):
+        new_quiz_round = {'previous_questions': [1, 3, 9],'quiz_category': '1'}
+        res = self.client().post('/quizes', json=new_quiz_round)
+        print("test33")
+        data = json.loads(res.data)
+        self.assertEqual(res.status_code, 200)
+        self.assertEqual(data['success'], True)
+
+    def test_404_quizgame(self):
+        new_quiz_round = {'previous_questions': []}
+        res = self.client().post('/quizes', json=new_quiz_round)
+        data = json.loads(res.data)
+        self.assertEqual(res.status_code, 422)
+        self.assertEqual(data["success"], False)
+        self.assertEqual(data["message"], "unprocessable")
+
+
     def test_get_category_questions(self):
         res = self.client().get('/categories/2/questions')
         data = json.loads(res.data)
@@ -48,7 +81,7 @@ class TriviaTestCase(unittest.TestCase):
         self.assertEqual(res.status_code, 404)
         self.assertEqual(data["success"], False)
         self.assertEqual(data["message"], "resource not found")
-"""
+
     def test_questions_search(self):
         new_search = {'searchterm': 'www'}
         res = self.client().post('/questions/search', json=new_search)

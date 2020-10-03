@@ -9,11 +9,11 @@ from models import setup_db, Question, Category
 QUESTIONS_PER_PAGE = 10
 
 
-def paginate_questions(request, selection):
+def paginate_questions(request, select):
   page = request.args.get('page', 1, type=int)
   startpoint = (page - 1) * QUESTIONS_PER_PAGE
   endpoint = startpoint + QUESTIONS_PER_PAGE
-  questions = [question.format() for question in selection]
+  questions = [question.format() for question in select]
   questionsinlist = questions[startpoint:endpoint]
   return questionsinlist
 
@@ -210,8 +210,11 @@ def create_app(test_config=None):
   @app.route('/quizes', methods=['POST'])
   def quiz_game():
     body = request.get_json()
+    if not ('quiz_category' in body):
+      abort(422)
     previous_questions = body.get('previous_questions', [])
     quiz_category = body.get('quiz_category', None)
+
     if quiz_category==None:
       abort(422)
     try:
