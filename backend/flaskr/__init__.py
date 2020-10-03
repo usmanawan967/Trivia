@@ -71,17 +71,17 @@ def create_app(test_config=None):
   @app.route('/questions', methods=['GET'])
   def get_question():
     selection = Question.query.order_by(Question.id).all()
-    current_questions = paginate_questions(request, selection)
+    questions = paginate_questions(request, selection)
     categories = Category.query.order_by(Category.type).all()
     categories_dict = {}
     for category in categories:
       categories_dict[category.id] = category.type
-    if len(current_questions) == 0:
+    if len(questions) == 0:
       abort(404)
 
     return jsonify({
       'success': True,
-      'questions': current_questions,
+      'questions': questions,
       'total_questions': len(selection),
       'categories': categories_dict,
     })
@@ -185,7 +185,8 @@ def create_app(test_config=None):
   def get_category_base_question(category_id):
    try:
     print("usman")
-    id=Category.query.with_entitie(Category.type).filter_by(id=category_id).one_or_none()
+    print(category_id)
+    id=Category.query.with_entities(Category.type).filter_by(id=category_id).all()
     print(id)
     data=Question.query.filter(Question.category==id[0])
     questions = paginate_questions(request, data)
