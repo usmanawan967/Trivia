@@ -176,7 +176,7 @@ question":"wwww"},
 POST `/quizzes`
 curl -X POST -H "Content-Type: application/json" -d'{"previous_question":[1,2,3],"quiz_category":"1"}' http://127.0.0.1:5000/quizes
 
-get random question within a given  category. Previously will never be asked again. 
+get random question within a given  category.  
 - *Request body:* {previous_questions: arr, quiz_category:category(string variable)
 - *Example response*: 
 ```
