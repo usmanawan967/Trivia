@@ -122,7 +122,7 @@ DELETE `/questions/<id>`
 curl -X DELETE http://127.0.0.1:5000/questions/32
 
 delete the question in database if its id match with given id
-- *Request arguments:* id:int 
+- *Request arguments:* int:id 
 - *Example response:* 
 ```
 {"deleted":32,
@@ -142,7 +142,7 @@ Add a new question in database
 ```
 POST `/questions/search`
 curl -X POST -H "Content-Type: application/json" -d'{"searchteram":"new"}' http://127.0.0.1:5000/questions/search
-get  all questions where a substring matches the searchTerm 
+get  all questions where a substring matches the searchterm 
 - *Request body:* jasonbody{'searchTerm':'string'}
 - *Example response:*
 ```
