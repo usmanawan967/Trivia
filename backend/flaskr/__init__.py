@@ -41,14 +41,14 @@ def create_app(test_config=None):
   @app.route('/categories',methods=['GET'])
   def select_categories():
     categories = Category.query.all()
-    categories_dict = {}
+    dict = {}
     for category in categories:
-      categories_dict[category.id] = category.type
-    if (len(categories_dict) == 0):
+      dict[category.id] = category.type
+    if (len(dict) == 0):
       abort(404)
     return jsonify({
       'success': True,
-      'categories': categories_dict
+      'categories': dict
     })
 
 
@@ -74,16 +74,16 @@ def create_app(test_config=None):
     categories = Category.query.all()
     questions = paginate_questions(request, get)
 
-    categories_dict = {}
+    dict = {}
     for category in categories:
-      categories_dict[category.id] = category.type
+      dict[category.id] = category.type
     if len(questions) == 0:
       abort(404)
     return jsonify({
       'success': True,
       'questions': questions,
       'total_questions': len(get),
-      'categories': categories_dict,
+      'categories': dict,
     })
 
 
