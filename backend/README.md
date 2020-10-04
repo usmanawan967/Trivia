@@ -142,7 +142,7 @@ Add a new question in database
 ```
 POST `/questions/search`
 curl -X POST -H "Content-Type: application/json" -d'{"searchteram":"new"}' http://127.0.0.1:5000/questions/search
-get  all questions where a substring matches the searchterm 
+get  all questions where given  substring matches with the searchterm 
 - *Request body:* jasonbody{'searchTerm':'string'}
 - *Example response:*
 ```
